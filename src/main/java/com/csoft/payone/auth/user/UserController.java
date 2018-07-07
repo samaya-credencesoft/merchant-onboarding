@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<ApplicationUser> signUp(@RequestBody ApplicationUser user) {
     	//check user with the same name exists or not 
-    	if(user.getUsername()!=null)
+    	if(user.getUsername()==null)
     	user.setUsername(user.getEmail());
     	user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
@@ -38,7 +38,7 @@ public class UserController {
 		if (userObj==null || userObj.size()==0) {
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			applicationUserRepository.save(user);
-			return new ResponseEntity<ApplicationUser>(HttpStatus.OK);
+			return new ResponseEntity<ApplicationUser>(user, HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<ApplicationUser>(HttpStatus.IM_USED);
 		}

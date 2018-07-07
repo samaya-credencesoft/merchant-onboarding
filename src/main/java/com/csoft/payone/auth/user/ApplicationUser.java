@@ -20,6 +20,8 @@ public class ApplicationUser {
     private String firstName;
     private String lastName;
     private String email;
+
+	private String businessName;
     
     public long getId() {
         return id;
@@ -107,5 +109,13 @@ public class ApplicationUser {
   	public void setId(long id) {
   		this.id = id;
   	}
-    
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
+
+
 }
