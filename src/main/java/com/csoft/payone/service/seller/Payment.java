@@ -17,7 +17,7 @@ public class Payment {
 	private String item;
 	private String itemDescription;
 	private String merchantWebsite;
-	private BigDecimal TotalAmount;
+	private String TotalAmount;
 	private String buyerEmail;
 	private String buyerMobile;
 	private Date lastDate;
@@ -46,10 +46,10 @@ public class Payment {
 	public void setMerchantWebsite(String merchantWebsite) {
 		this.merchantWebsite = merchantWebsite;
 	}
-	public BigDecimal getTotalAmount() {
+	public String getTotalAmount() {
 		return TotalAmount;
 	}
-	public void setTotalAmount(BigDecimal totalAmount) {
+	public void setTotalAmount(String totalAmount) {
 		TotalAmount = totalAmount;
 	}
 	public String getBuyerEmail() {

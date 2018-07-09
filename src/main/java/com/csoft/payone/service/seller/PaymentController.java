@@ -1,16 +1,11 @@
 package com.csoft.payone.service.seller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -22,6 +17,12 @@ public class PaymentController {
 		this.paymentRepository = paymentRepository;
 	}
 
+	@GetMapping("/findAll")
+	public ResponseEntity<List<Payment>> findAll() {
+		// check user with the same name exists or not
+		List payments = paymentRepository.findAll();
+			return new ResponseEntity<List<Payment>>(HttpStatus.OK);
+	}
 	@PostMapping("/create")
 	public ResponseEntity<Payment> create(@RequestBody Payment payment) {
 		// check user with the same name exists or not
