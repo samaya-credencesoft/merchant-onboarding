@@ -16,12 +16,9 @@ public class PaymentController {
 	public PaymentController(PaymentRepository paymentRepository) {
 		this.paymentRepository = paymentRepository;
 	}
-
 	@GetMapping("/findAll")
-	public ResponseEntity<List<Payment>> findAll() {
-		// check user with the same name exists or not
-		List payments = paymentRepository.findAll();
-			return new ResponseEntity<List<Payment>>(HttpStatus.OK);
+	public ResponseEntity<?> findAll() {
+			return new ResponseEntity<>(paymentRepository.findAll(),HttpStatus.OK);
 	}
 	@PostMapping("/create")
 	public ResponseEntity<Payment> create(@RequestBody Payment payment) {
