@@ -1,9 +1,15 @@
 package com.csoft.payone.auth.user;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;;
 
 @Entity
 public class ApplicationUser {
@@ -20,8 +26,10 @@ public class ApplicationUser {
     private String firstName;
     private String lastName;
     private String email;
-
 	private String businessName;
+	@OneToMany(fetch = FetchType.EAGER)
+	    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	    private Collection<Role> roles;
     
     public long getId() {
         return id;
@@ -116,6 +124,12 @@ public class ApplicationUser {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
+	 public Collection<Role> getRoles() {
+	        return roles;
+	    }
 
+	    public void setRoles(final Collection<Role> roles) {
+	        this.roles = roles;
+	    }
 
 }
