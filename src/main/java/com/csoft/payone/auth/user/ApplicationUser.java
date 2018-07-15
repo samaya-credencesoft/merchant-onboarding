@@ -1,15 +1,11 @@
 package com.csoft.payone.auth.user;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;;
+import javax.persistence.*;
+;
 
 @Entity
 public class ApplicationUser {
@@ -17,7 +13,7 @@ public class ApplicationUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
-    private String password;
+    transient  private String password;
 	private String address;
     private String mobileNumber;
     private String landphoneNumber;
@@ -27,11 +23,17 @@ public class ApplicationUser {
     private String lastName;
     private String email;
 	private String businessName;
-	@OneToMany(fetch = FetchType.EAGER)
-	    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	    private Collection<Role> roles;
-    
-    public long getId() {
+	@ManyToMany (cascade= CascadeType.ALL)
+	@JoinTable(
+			name = "users_roles",
+			joinColumns = @JoinColumn(
+			name = "user_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(
+			name = "role_id", referencedColumnName = "id")
+			)
+	private List<Role> roles;
+
+	public long getId() {
         return id;
     }
 
@@ -124,12 +126,59 @@ public class ApplicationUser {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
-	 public Collection<Role> getRoles() {
+	 public List<Role> getRoles() {
 	        return roles;
 	    }
 
-	    public void setRoles(final Collection<Role> roles) {
+	    public void setRoles(final List<Role> roles) {
 	        this.roles = roles;
 	    }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ApplicationUser that = (ApplicationUser) o;
+		return Objects.equals(username, that.username) &&
+				Objects.equals(firstName, that.firstName) &&
+				Objects.equals(lastName, that.lastName) &&
+				Objects.equals(email, that.email);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(username, firstName, lastName, email);
+	}
+	/*
+	@Override
+	public String toString() {
+		return "{" +
+				"id:" + id +
+				", username:'" + username + '\'' +
+				", mobileNumber:'" + mobileNumber + '\'' +
+				", firstName:'" + firstName + '\'' +
+				", lastName:'" + lastName + '\'' +
+				", email:'" + email + '\'' +
+				", businessName:'" + businessName + '\'' +
+				",roles=" + roles +
+				'}';
+	}
+*/
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append("{")
+				.append("id:"+id)
+				.append(",username:"+username)
+				.append(",mobileNumber:"+mobileNumber)
+				.append(",firstName:"+firstName)
+				.append(",lastName:"+lastName)
+				.append(",email:"+email)
+				.append(",businessName:"+lastName)
+				.append(",roles:"+roles)
+				.append("}")
+				.toString();
+	}
 
 }

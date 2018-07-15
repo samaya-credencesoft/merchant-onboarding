@@ -1,13 +1,11 @@
 package com.csoft.payone.auth.user;
-import java.util.Collection;
+import com.csoft.payone.Application;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.*;
 
 @Entity
 public class Role {
@@ -26,8 +24,6 @@ public class Role {
         this.name = name;
     }
 
-    //
-
     public Long getId() {
         return id;
     }
@@ -40,32 +36,47 @@ public class Role {
         return name;
     }
 
+	@ManyToMany(mappedBy = "roles")
+	transient private List<ApplicationUser> users;
+
     public void setName(final String name) {
         this.name = name;
     }
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Role role = (Role) obj;
-        if (!role.equals(role.name)) {
-            return false;
-        }
-        return true;
-    }
+	public List<ApplicationUser> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<ApplicationUser> users) {
+		this.users = users;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Role role = (Role) o;
+		return Objects.equals(id, role.id) &&
+				Objects.equals(name, role.name);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(id, name);
+	}
 /*
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("Role [name=").append(name).append("]").append("[id=").append(id).append("]");
-        return builder.toString();
-    }
-    */
+	@Override
+	public String toString() {
+		return "{" +
+				"name:" + name + '\'' +
+				'}';
+	} */
+	@Override
+	public String toString() {
+		return new StringBuilder()
+				.append("{")
+				.append("name:"+name)
+				.append("}")
+				.toString();
+	}
 }
